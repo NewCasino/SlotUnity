@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{D07065F3-EC90-6C7D-A900-F677BF5EAABC}") = "SlotUnity", "Assembly-CSharp.csproj", "{0DD80881-14E1-4C9D-322B-648F01E80D25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DD80881-14E1-4C9D-322B-648F01E80D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DD80881-14E1-4C9D-322B-648F01E80D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DD80881-14E1-4C9D-322B-648F01E80D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DD80881-14E1-4C9D-322B-648F01E80D25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

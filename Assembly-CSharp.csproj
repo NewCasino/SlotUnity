@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{CF8A0328-8DDF-E6A0-BC15-3D118370C073}</ProjectGuid>
+    <ProjectGuid>{0DD80881-14E1-4C9D-322B-648F01E80D25}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\ConnectRequest.cs" />
      <Compile Include="Assets\Script\Reel.cs" />
      <Compile Include="Assets\Script\ReelPanel.cs" />
+     <Compile Include="Assets\Script\SymbolBehavior.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity 5.4.0b11/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

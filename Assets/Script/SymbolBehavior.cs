@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class SymbolBehavior : MonoBehaviour {
 
+	private int[] myPos;
+	private int LightingTime = 8;
+	private int currentLight = 20;
+	private bool canFlash = false;
 	private int currentPos = -1;
 	private int targetPos = -1;
 
@@ -17,10 +22,21 @@ public class SymbolBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		CheckDropSymbol ();
+		CheckFlash ();
+	}
+
+	private void CheckDropSymbol(){
 		if (currentTime <= 0) return;
 
 		currentTime--;
 		gameObject.transform.localPosition = gameObject.transform.localPosition + Vector3.down * dropDistance;
+	}
+
+	private void CheckFlash(){
+		if (canFlash == false) return;
+
+		Lightning ();
 	}
 
 	public void SetTargetPos(int targetPos, int cPos = 0, int tPos = 0){
@@ -30,7 +46,7 @@ public class SymbolBehavior : MonoBehaviour {
 		} else {
 			this.currentTime = (this.currentPos - this.targetPos) * (this.boxDistance / this.dropDistance);
 		}
-		this.currentPos = this.targetPos;
+		this.myPos[0] = this.currentPos = this.targetPos;
 	}
 
 	public void SetDistance(int dropDistance, int boxDistance){
@@ -38,12 +54,27 @@ public class SymbolBehavior : MonoBehaviour {
 		this.boxDistance = boxDistance;
 	}
 
-	public void SetCurrentPos(int currentPos){
-		this.currentPos = currentPos;
+	public void SetCurrentPos(int[] myPos){
+		this.myPos = myPos;
+		this.currentPos = myPos[0];
 	}
 
-//	public void SetIndividual(int cPos, int tPos, int targetPos){
-//		currentTime = (tPos - cPos) / dropDistance;
-//		this.targetPos = this.currentPos = targetPos;
-//	}
+	private void Lightning(){
+		if (currentLight <= 0) {
+			gameObject.GetComponent<Image> ().enabled = !gameObject.GetComponent<Image> ().enabled;
+			currentLight = 20;
+			LightingTime--;
+			if (LightingTime <= 0) {
+				GameObject.Find("ReelPanel").SendMessage ("DestroySymbol", myPos);
+				GameObject.Find("ReelPanel").SendMessage ("DoNextIter");
+				Destroy (this.gameObject);
+			}
+		} else {
+			currentLight--;
+		}
+	}
+
+	public void SetToFlash(bool canFlash){
+		this.canFlash = canFlash;
+	}
 }

@@ -46,7 +46,7 @@ public class SymbolBehavior : MonoBehaviour {
 		} else {
 			this.currentTime = (this.currentPos - this.targetPos) * (this.boxDistance / this.dropDistance);
 		}
-		this.myPos[0] = this.currentPos = this.targetPos;
+		this.myPos[1] = this.currentPos = this.targetPos;
 	}
 
 	public void SetDistance(int dropDistance, int boxDistance){
@@ -56,7 +56,11 @@ public class SymbolBehavior : MonoBehaviour {
 
 	public void SetCurrentPos(int[] myPos){
 		this.myPos = myPos;
-		this.currentPos = myPos[0];
+		this.currentPos = myPos[1];
+	}
+
+	public int GetSymbolPos(){
+		return myPos [1];
 	}
 
 	private void Lightning(){
@@ -65,7 +69,6 @@ public class SymbolBehavior : MonoBehaviour {
 			currentLight = 20;
 			LightingTime--;
 			if (LightingTime <= 0) {
-				GameObject.Find("ReelPanel").SendMessage ("DestroySymbol", myPos);
 				GameObject.Find("ReelPanel").SendMessage ("DoNextIter");
 				Destroy (this.gameObject);
 			}

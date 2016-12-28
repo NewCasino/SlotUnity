@@ -6,17 +6,17 @@ public class ReelPanel : MonoBehaviour {
 	private int burstSymbolNum = 0;
 	private int currentTransition = 0;
 	private Reel reel;
+	private ReelScreen reelScreen = new ReelScreen();
 	private string spinResultJsonString;
 	private ConnectRequest spinRequest;
 	public GameObject symbol_gameobject;
-	public GameObject[,] symbol = new GameObject[5,3];
 	private IEnumerator iter;
 
-	private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[3,1,1]},{\"reel\":[5,1,4]},{\"reel\":[1,6,7]},{\"reel\":[6,5,4]},{\"reel\":[2,9,4]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[2,3]},{\"reel\":[2]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[3]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[3]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[3,6,4]},{\"reel\":[5,1,2]},{\"reel\":[6,7,3]},{\"reel\":[6,5,8]},{\"reel\":[2,9,1]}]}}}}";
-
+	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[3,1,1]},{\"reel\":[5,1,4]},{\"reel\":[1,6,7]},{\"reel\":[6,5,4]},{\"reel\":[2,9,4]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[2,3]},{\"reel\":[2]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[3]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[3]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[3,6,4]},{\"reel\":[5,1,2]},{\"reel\":[6,7,3]},{\"reel\":[6,5,8]},{\"reel\":[2,9,1]}]}}}}";
+	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[1,1,3]},{\"reel\":[4,1,5]},{\"reel\":[7,6,1]},{\"reel\":[4,5,6]},{\"reel\":[4,9,2]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1,2]},{\"reel\":[2]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1]},{\"reel\":[2]},{\"reel\":[1]},{\"reel\":[1]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[4,6,3]},{\"reel\":[2,1,5]},{\"reel\":[3,7,6]},{\"reel\":[8,5,6]},{\"reel\":[1,9,2]}]}}}}";
 	// Use this for initialization
 	void Start () {
-		InitSymbol ();
+		//InitSymbol ();
 	}
 	
 	// Update is called once per frame
@@ -25,21 +25,23 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	private void InitSymbol(){
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 3; j++) {
-				symbol[i,j] = Instantiate (symbol_gameobject);
-				symbol[i,j].transform.SetParent (this.transform);
-				int[] pos = { j + 3, i };
-				symbol[i,j].GetComponent<SymbolBehavior> ().SetCurrentPos (pos);
+		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
+			for (int j = 0; j <reel.result.gameResult.start.reels[i].reel.Length; j++) {
+				GameObject newSymbol = Instantiate (symbol_gameobject);
+				reelScreen.addSymbolToLine (i, newSymbol);
+				reelScreen.getLineSymbol (i, j).transform.SetParent (this.transform);
+				int[] pos = { i, j };
+				reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().SetCurrentPos (pos);
+				reelScreen.getLineSymbol (i, j).name = i.ToString () + j.ToString ();
 			}
 		}
 		resetSymbolPosition ();
 	}
 
 	private void resetSymbolPosition(){
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 3; j++) {
-				symbol[i,j].transform.localPosition = new Vector3 (i*250, 750 + j*250 + (i*5+j)*25, 0);
+		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
+			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
+				reelScreen.getLineSymbol (i, j).transform.localPosition = new Vector3 (i * 250, 750 + j * 250 + (i * 5 + j) * 25, 0);
 			}
 		}
 	}
@@ -49,7 +51,7 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void Spin(){
-		resetSymbolPosition ();
+		//resetSymbolPosition ();
 		GetSpinResult ();
 	}
 
@@ -62,28 +64,27 @@ public class ReelPanel : MonoBehaviour {
 		spinResultJsonString = spinRequest.GetResult ();
 		spinRequest = null;
 
-		//reel = Reel.CreateFromJSON (spinResultJsonString);
-		reel = Reel.CreateFromJSON (json);
-		InitImage (reel);
+		reel = Reel.CreateFromJSON (spinResultJsonString);
+		reel.Massage ();
+
+		InitSymbol();
+		InitImage ();
 		DropSymbol ();
 		Invoke("BurstSymbol", 1.0f);
-		//Invoke ("BurstSymbol", 1.0f);
-		//StartCoroutine(WaitUntil(DropSymbol ()));
 	}
 
-	public void InitImage(Reel reel){
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 3; j++) {
-				symbol [i, j].GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reel.result.gameResult.start.reels[i].reel[j].ToString());
+	public void InitImage(){
+		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
+			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
+				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reel.result.gameResult.start.reels[i].reel[j].ToString());
 			}
 		}
 	}
 
 	private bool DropSymbol(){
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 3; j++) {
-				symbol [i, j].GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)symbol [i, j].transform.localPosition.y, 250 * j);
-				//symbol [j, i].GetComponent<SymbolBehavior> ().SetTargetPos (j);
+		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
+			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
+				reelScreen.getLineSymbol(i,j).GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)reelScreen.getLineSymbol(i,j).transform.localPosition.y, 250 * j);
 			}
 		}
 
@@ -95,6 +96,7 @@ public class ReelPanel : MonoBehaviour {
 		burstSymbolNum--;
 		if (burstSymbolNum <= 0) {
 			burstSymbolNum = 0;
+			DestroySymbol ();
 			iter.MoveNext ();
 		}
 	}
@@ -107,7 +109,7 @@ public class ReelPanel : MonoBehaviour {
 
 		for (int i = 0; i < reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length; i++) {
 			for (int j = 0; j < reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel.Length; j++) {
-				symbol [i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel[j]-1].GetComponent<SymbolBehavior> ().SetToFlash (true);
+				reelScreen.getLineSymbol(i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel[j]-1).GetComponent<SymbolBehavior> ().SetToFlash (true);
 				burstSymbolNum++;
 			}
 		}
@@ -116,33 +118,12 @@ public class ReelPanel : MonoBehaviour {
 	}
 		
 	private IEnumerator Drop(){
-		//Drop Current Symbol To bottom
-		for (int i = 0; i < 5; i++) {
-			int currentPos = -1;
-			for (int j = 0; j < 3; j++) {
-				if (symbol [i, j] != null) {
-					if (currentPos >= 0) {
-						symbol [i, j - currentPos - 1] = symbol [i, j];
-						symbol [i, j].GetComponent<SymbolBehavior> ().SetTargetPos (j-currentPos-1);
-					}
-				} else {
-					currentPos++;
+		
+		for (int i = 0; i < reelScreen.symbols_line.Length; i++) {
+			for (int j = 0; j < reelScreen.symbols_line[i].reel_symbol.Count; j++) {
+				if (reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().GetSymbolPos () != j) {
+					reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().SetTargetPos (j);
 				}
-			}
-		}
-
-		//add Symbol
-		int reesLength = reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length;
-		for (int k = 0; k < reesLength; k++) {
-			int reelLength = reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [k].reel.Length;
-			for (int z = 0; z < reelLength; z++) {
-				symbol[k,3-reelLength+z] = Instantiate (symbol_gameobject);
-				symbol[k,3-reelLength+z].transform.SetParent (this.transform);
-				int[] pos = { z + 3, k };
-				symbol[k,3-reelLength+z].GetComponent<SymbolBehavior> ().SetCurrentPos (pos);
-				symbol[k,3-reelLength+z].transform.localPosition = new Vector3 (k*250, 750 + z*250, 0);
-				symbol [k, 3-reelLength+z].GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reel.result.gameResult.transitions[currentTransition].transition.drop.reels[k].reel[z].ToString());
-				symbol [k, 3 - reelLength + z].GetComponent<SymbolBehavior> ().SetTargetPos (3 - reelLength + z);
 			}
 		}
 
@@ -151,7 +132,12 @@ public class ReelPanel : MonoBehaviour {
 		yield return 1;
 	}
 
-	public void DestroySymbol(int[] pos){
-		symbol [pos[1], pos[0]] = null;
+	public void DestroySymbol(){
+		for (int i = 0;i<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length;i++) {
+			for (int j=0;j<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel.Length;j++) {
+				Debug.Log ("i="+i+",j="+reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel [j]);
+				reelScreen.destroySymbol (i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel [j]-1);
+			}
+		}
 	}
 }

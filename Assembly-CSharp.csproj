@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\ConnectRequest.cs" />
      <Compile Include="Assets\Script\Reel.cs" />
      <Compile Include="Assets\Script\ReelPanel.cs" />
+     <Compile Include="Assets\Script\ReelScreen.cs" />
      <Compile Include="Assets\Script\SymbolBehavior.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity 5.4.0b11/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

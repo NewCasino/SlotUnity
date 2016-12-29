@@ -118,7 +118,6 @@ public class ReelPanel : MonoBehaviour {
 	}
 		
 	private IEnumerator Drop(){
-		
 		for (int i = 0; i < reelScreen.symbols_line.Length; i++) {
 			for (int j = 0; j < reelScreen.symbols_line[i].reel_symbol.Count; j++) {
 				if (reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().GetSymbolPos () != j) {
@@ -135,7 +134,6 @@ public class ReelPanel : MonoBehaviour {
 	public void DestroySymbol(){
 		for (int i = 0;i<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length;i++) {
 			for (int j=0;j<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel.Length;j++) {
-				Debug.Log ("i="+i+",j="+reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel [j]);
 				reelScreen.destroySymbol (i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel [j]-1);
 			}
 		}

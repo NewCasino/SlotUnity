@@ -78,22 +78,22 @@ public class Reel
 
 	public void Massage(){
 		for(int i=0;i<result.gameResult.start.reels.Length;i++){
-			Array.Reverse (result.gameResult.start.reels [i].reel);
-			Array.Reverse (result.gameResult.end.reels [i].reel);
+			//Array.Reverse (result.gameResult.start.reels [i].reel);
+			//Array.Reverse (result.gameResult.end.reels [i].reel);
 		}
 
-		for (int i = 0; i < result.gameResult.transitions.Length; i++) {
-			for(int j=0;j<result.gameResult.transitions[i].transition.collapse.reels.Length;j++){
-				for(int k=0;k<result.gameResult.transitions[i].transition.collapse.reels[j].reel.Length;k++){
-					if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 1) {
-						result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 3;
-					} else {
-						if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 3) {
-							result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 1;
-						}
-					}
-				}
-			}
-		}
+//		for (int i = 0; i < result.gameResult.transitions.Length; i++) {
+//			for(int j=0;j<result.gameResult.transitions[i].transition.collapse.reels.Length;j++){
+//				for(int k=0;k<result.gameResult.transitions[i].transition.collapse.reels[j].reel.Length;k++){
+//					if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 1) {
+//						result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 3;
+//					} else {
+//						if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 3) {
+//							result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 1;
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 }

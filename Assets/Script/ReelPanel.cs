@@ -5,7 +5,7 @@ using System.Collections;
 public class ReelPanel : MonoBehaviour {
 	private int burstSymbolNum = 0;
 	private int currentTransition = 0;
-	private Reel reel;
+	private ReelData reelData;
 	private ReelScreen reelScreen = new ReelScreen();
 	private string spinResultJsonString;
 	private ConnectRequest spinRequest;
@@ -25,8 +25,8 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	private void InitSymbol(){
-		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
-			for (int j = 0; j <reel.result.gameResult.start.reels[i].reel.Length; j++) {
+		for (int i = 0; i < reelData.playScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.playScreen.reels [i].reel.Length; j++) {
 				GameObject newSymbol = Instantiate (symbol_gameobject);
 				reelScreen.addSymbolToLine (i, newSymbol);
 				reelScreen.getLineSymbol (i, j).transform.SetParent (this.transform);
@@ -35,15 +35,30 @@ public class ReelPanel : MonoBehaviour {
 				reelScreen.getLineSymbol (i, j).name = i.ToString () + j.ToString ();
 			}
 		}
+//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
+//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
+//				GameObject newSymbol = Instantiate (symbol_gameobject);
+//				reelScreen.addSymbolToLine (i, newSymbol);
+//				reelScreen.getLineSymbol (i, j).transform.SetParent (this.transform);
+//				int[] pos = { i, j };
+//				reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().SetCurrentPos (pos);
+//				reelScreen.getLineSymbol (i, j).name = i.ToString () + j.ToString ();
+//			}
+//		}
 		resetSymbolPosition ();
 	}
 
 	private void resetSymbolPosition(){
-		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
-			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
+		for (int i = 0; i < reelData.playScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.playScreen.reels [i].reel.Length; j++) {
 				reelScreen.getLineSymbol (i, j).transform.localPosition = new Vector3 (i * 250, 750 + j * 250 + (i * 5 + j) * 25, 0);
 			}
 		}
+//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
+//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
+//				reelScreen.getLineSymbol (i, j).transform.localPosition = new Vector3 (i * 250, 750 + j * 250 + (i * 5 + j) * 25, 0);
+//			}
+//		}
 	}
 
 	private void reset(){
@@ -64,8 +79,8 @@ public class ReelPanel : MonoBehaviour {
 		spinResultJsonString = spinRequest.GetResult ();
 		spinRequest = null;
 
-		reel = Reel.CreateFromJSON (spinResultJsonString);
-		reel.Massage ();
+		reelData = ReelData.CreateFromJSON (spinResultJsonString);
+		reelData.Massage ();
 
 		InitSymbol();
 		InitImage ();
@@ -74,19 +89,35 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void InitImage(){
-		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
-			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
-				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reel.result.gameResult.start.reels[i].reel[j].ToString());
+		for (int i = 0; i < reelData.playScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.playScreen.reels[i].reel.Length; j++) {
+				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.playScreen.reels[i].reel[j].ToString());
 			}
 		}
+//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
+//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length; j++) {
+//				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.gameResult.startScreen.reels[i].reel[j].ToString());
+//			}
+//		}
+//
+//		for (int i = 0; i < reelData.gameResult.topScreen.reels.Length; i++) {
+//			for (int j = 0; j < reelData.gameResult.topScreen.reels [i].reel.Length; j++) {
+//				reelScreen.getLineSymbol(i,j+3).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.gameResult.topScreen.reels[i].reel[j].ToString());
+//			}
+//		}
 	}
 
 	private bool DropSymbol(){
-		for (int i = 0; i < reel.result.gameResult.start.reels.Length; i++) {
-			for (int j = 0; j < reel.result.gameResult.start.reels[i].reel.Length; j++) {
+		for (int i = 0; i < reelData.playScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.playScreen.reels [i].reel.Length; j++) {
 				reelScreen.getLineSymbol(i,j).GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)reelScreen.getLineSymbol(i,j).transform.localPosition.y, 250 * j);
 			}
 		}
+//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
+//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
+//				reelScreen.getLineSymbol(i,j).GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)reelScreen.getLineSymbol(i,j).transform.localPosition.y, 250 * j);
+//			}
+//		}
 
 		return true;
 	}
@@ -102,14 +133,14 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	private void BurstSymbol(){
-		if (currentTransition >= reel.result.gameResult.transitions.Length) {
+		if (currentTransition >= reelData.gameResult.transitions.Length) {
 			currentTransition = 0;
 			return;
 		}
 
-		for (int i = 0; i < reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length; i++) {
-			for (int j = 0; j < reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel.Length; j++) {
-				reelScreen.getLineSymbol(i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel[j]-1).GetComponent<SymbolBehavior> ().SetToFlash (true);
+		for (int i = 0; i < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
+			for (int j = 0; j < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
+				reelScreen.getLineSymbol(i, reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]).GetComponent<SymbolBehavior> ().SetToFlash (true);
 				burstSymbolNum++;
 			}
 		}
@@ -132,9 +163,9 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void DestroySymbol(){
-		for (int i = 0;i<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels.Length;i++) {
-			for (int j=0;j<reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel.Length;j++) {
-				reelScreen.destroySymbol (i, reel.result.gameResult.transitions [currentTransition].transition.collapse.reels [i].reel [j]-1);
+		for (int i = 0; i < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
+			for (int j = 0; j < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
+				reelScreen.destroySymbol (i, reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]);
 			}
 		}
 	}

@@ -3,27 +3,29 @@ using System.Collections;
 using System;
 
 [System.Serializable]
-public class Reel
+public class ReelData : ISerializationCallbackReceiver
 {
-	public Result result;
-
-	[System.Serializable]
-	public struct Result
-	{
-		public string gameType;
-		public GameResult gameResult;
-	}
+	public ReelScreen playScreen;
+	public Round gameResult;
 
 	[System.Serializable]
 	public struct GameResult
 	{
-		public FullScreen start;
-		public Transitions[] transitions;
-		public FullScreen end;
+		//public string gameType;
+		public Round round;
 	}
 
 	[System.Serializable]
-	public struct FullScreen
+	public struct Round
+	{
+		public ReelScreen startScreen;
+		public ReelScreen topScreen;
+		public ReelScreen endScreen;
+		public Transitions[] transitions;
+	}
+
+	[System.Serializable]
+	public struct ReelScreen
 	{
 		public Reels[] reels;
 	}
@@ -37,32 +39,32 @@ public class Reel
 	[System.Serializable]
 	public struct Transitions
 	{
-		public Transition transition;
-	}
-
-	[System.Serializable]
-	public struct Transition
-	{
 		public Collapse collapse;
-		//public Drop drop;
 	}
 
 	[System.Serializable]
 	public struct Collapse
 	{
-		public CollapseReels[] reels;
+		public Targets[] targets;
 	}
 
 	[System.Serializable]
-	public struct Drop
+	public struct Targets
 	{
-		public Reels[] reels;
+		public Target target;
 	}
 
 	[System.Serializable]
-	public struct CollapseReels
+	public struct Target
 	{
-		public int[] reel;
+		public string symbol;
+		public Positions[] positions;
+	}
+
+	[System.Serializable]
+	public struct Positions
+	{
+		public int[] p;
 	}
 
 	[System.Serializable]
@@ -71,29 +73,52 @@ public class Reel
 		public int[] symbol;
 	}
 
-	public static Reel CreateFromJSON(string jsonString)
+	public static ReelData CreateFromJSON(string jsonString)
 	{
-		return JsonUtility.FromJson<Reel>(jsonString);
+		return JsonUtility.FromJson<ReelData>(jsonString);
+	}
+
+	public void OnBeforeSerialize(){
+		
+	}
+
+	public void OnAfterDeserialize(){
+
 	}
 
 	public void Massage(){
-		for(int i=0;i<result.gameResult.start.reels.Length;i++){
-			//Array.Reverse (result.gameResult.start.reels [i].reel);
-			//Array.Reverse (result.gameResult.end.reels [i].reel);
+		for(int i=0;i<gameResult.startScreen.reels.Length;i++){
+			Array.Reverse (gameResult.startScreen.reels [i].reel);
+			Array.Reverse (gameResult.endScreen.reels [i].reel);
+			Array.Reverse (gameResult.topScreen.reels [i].reel);
 		}
 
-//		for (int i = 0; i < result.gameResult.transitions.Length; i++) {
-//			for(int j=0;j<result.gameResult.transitions[i].transition.collapse.reels.Length;j++){
-//				for(int k=0;k<result.gameResult.transitions[i].transition.collapse.reels[j].reel.Length;k++){
-//					if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 1) {
-//						result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 3;
-//					} else {
-//						if (result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] == 3) {
-//							result.gameResult.transitions [i].transition.collapse.reels [j].reel [k] = 1;
-//						}
-//					}
-//				}
-//			}
-//		}
+		for (int i = 0; i < gameResult.transitions.Length; i++) {
+			for (int j = 0; j < gameResult.transitions [i].collapse.targets.Length; j++) {
+				for (int k = 0; k < gameResult.transitions [i].collapse.targets [j].target.positions.Length; k++) {
+					for (int y = 0; y < gameResult.transitions [i].collapse.targets [j].target.positions [k].p.Length; y++) {
+						if (gameResult.transitions [i].collapse.targets [j].target.positions [k].p [y] == 0) {
+							gameResult.transitions [i].collapse.targets [j].target.positions [k].p [y] = 2;
+						} else {
+							if (gameResult.transitions [i].collapse.targets [j].target.positions [k].p [y] == 2) {
+								gameResult.transitions [i].collapse.targets [j].target.positions [k].p [y] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		playScreen = new ReelScreen ();
+		playScreen.reels = new Reels[gameResult.startScreen.reels.Length];
+		for (int i = 0; i < gameResult.startScreen.reels.Length; i++) {
+			playScreen.reels [i].reel = new string[gameResult.startScreen.reels [i].reel.Length + gameResult.topScreen.reels [i].reel.Length];
+			for (int j = 0; j < gameResult.startScreen.reels [i].reel.Length; j++) {
+				playScreen.reels [i].reel [j] = gameResult.startScreen.reels [i].reel [j];
+			}
+			for (int j = 0; j < gameResult.topScreen.reels [i].reel.Length; j++) {
+				playScreen.reels [i].reel [j + gameResult.startScreen.reels [i].reel.Length] = gameResult.topScreen.reels [i].reel [j];
+			}
+		}
 	}
 }

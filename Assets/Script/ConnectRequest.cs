@@ -7,7 +7,7 @@ public class ConnectRequest{
 	//public GameObject reelPanel;
 
 	private const string DOMAIN_NAME = "https://cosmos.skygeario.com/";
-	public const string SPIN = DOMAIN_NAME + "spin";
+	public const string SPIN = DOMAIN_NAME + "newspin";
 	private WWW www;
 
 	private string results = "";

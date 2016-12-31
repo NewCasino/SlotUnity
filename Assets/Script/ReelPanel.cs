@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using LitJson;
 
 public class ReelPanel : MonoBehaviour {
 	private int burstSymbolNum = 0;
@@ -16,7 +17,7 @@ public class ReelPanel : MonoBehaviour {
 	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[1,1,3]},{\"reel\":[4,1,5]},{\"reel\":[7,6,1]},{\"reel\":[4,5,6]},{\"reel\":[4,9,2]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1,2]},{\"reel\":[2]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1]},{\"reel\":[2]},{\"reel\":[1]},{\"reel\":[1]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[4,6,3]},{\"reel\":[2,1,5]},{\"reel\":[3,7,6]},{\"reel\":[8,5,6]},{\"reel\":[1,9,2]}]}}}}";
 	// Use this for initialization
 	void Start () {
-		//InitSymbol ();
+		
 	}
 	
 	// Update is called once per frame
@@ -35,17 +36,17 @@ public class ReelPanel : MonoBehaviour {
 				reelScreen.getLineSymbol (i, j).name = i.ToString () + j.ToString ();
 			}
 		}
-//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
-//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
-//				GameObject newSymbol = Instantiate (symbol_gameobject);
-//				reelScreen.addSymbolToLine (i, newSymbol);
-//				reelScreen.getLineSymbol (i, j).transform.SetParent (this.transform);
-//				int[] pos = { i, j };
-//				reelScreen.getLineSymbol (i, j).GetComponent<SymbolBehavior> ().SetCurrentPos (pos);
-//				reelScreen.getLineSymbol (i, j).name = i.ToString () + j.ToString ();
-//			}
-//		}
 		resetSymbolPosition ();
+	}
+
+	private void DestoryAllSymbol(){
+		reelScreen = null;
+		reelScreen = new ReelScreen ();
+		foreach (Transform child in gameObject.transform) {
+			//DestoryAllSymbol (child);
+			//Destroy (child);
+			Destroy(child.gameObject);
+		}
 	}
 
 	private void resetSymbolPosition(){
@@ -54,11 +55,6 @@ public class ReelPanel : MonoBehaviour {
 				reelScreen.getLineSymbol (i, j).transform.localPosition = new Vector3 (i * 250, 750 + j * 250 + (i * 5 + j) * 25, 0);
 			}
 		}
-//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
-//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
-//				reelScreen.getLineSymbol (i, j).transform.localPosition = new Vector3 (i * 250, 750 + j * 250 + (i * 5 + j) * 25, 0);
-//			}
-//		}
 	}
 
 	private void reset(){
@@ -66,7 +62,7 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void Spin(){
-		//resetSymbolPosition ();
+		DestoryAllSymbol ();
 		GetSpinResult ();
 	}
 
@@ -79,7 +75,7 @@ public class ReelPanel : MonoBehaviour {
 		spinResultJsonString = spinRequest.GetResult ();
 		spinRequest = null;
 
-		reelData = ReelData.CreateFromJSON (spinResultJsonString);
+		reelData = JsonMapper.ToObject<ReelData>(spinResultJsonString);
 		reelData.Massage ();
 
 		InitSymbol();
@@ -94,17 +90,6 @@ public class ReelPanel : MonoBehaviour {
 				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.playScreen.reels[i].reel[j].ToString());
 			}
 		}
-//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
-//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length; j++) {
-//				reelScreen.getLineSymbol(i,j).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.gameResult.startScreen.reels[i].reel[j].ToString());
-//			}
-//		}
-//
-//		for (int i = 0; i < reelData.gameResult.topScreen.reels.Length; i++) {
-//			for (int j = 0; j < reelData.gameResult.topScreen.reels [i].reel.Length; j++) {
-//				reelScreen.getLineSymbol(i,j+3).GetComponent<Image> ().overrideSprite = Resources.Load<Sprite> (reelData.gameResult.topScreen.reels[i].reel[j].ToString());
-//			}
-//		}
 	}
 
 	private bool DropSymbol(){
@@ -113,11 +98,6 @@ public class ReelPanel : MonoBehaviour {
 				reelScreen.getLineSymbol(i,j).GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)reelScreen.getLineSymbol(i,j).transform.localPosition.y, 250 * j);
 			}
 		}
-//		for (int i = 0; i < reelData.gameResult.startScreen.reels.Length; i++) {
-//			for (int j = 0; j < reelData.gameResult.startScreen.reels [i].reel.Length+ reelData.gameResult.topScreen.reels[i].reel.Length; j++) {
-//				reelScreen.getLineSymbol(i,j).GetComponent<SymbolBehavior> ().SetTargetPos (j, (int)reelScreen.getLineSymbol(i,j).transform.localPosition.y, 250 * j);
-//			}
-//		}
 
 		return true;
 	}
@@ -133,14 +113,14 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	private void BurstSymbol(){
-		if (currentTransition >= reelData.gameResult.transitions.Length) {
+		if (currentTransition >= reelData.cosmos.gameResult.transitions.Length) {
 			currentTransition = 0;
 			return;
 		}
 
-		for (int i = 0; i < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
-			for (int j = 0; j < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
-				reelScreen.getLineSymbol(i, reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]).GetComponent<SymbolBehavior> ().SetToFlash (true);
+		for (int i = 0; i < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
+			for (int j = 0; j < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
+				reelScreen.getLineSymbol(i, reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]).GetComponent<SymbolBehavior> ().SetToFlash (true);
 				burstSymbolNum++;
 			}
 		}
@@ -163,9 +143,9 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void DestroySymbol(){
-		for (int i = 0; i < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
-			for (int j = 0; j < reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
-				reelScreen.destroySymbol (i, reelData.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]);
+		for (int i = 0; i < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
+			for (int j = 0; j < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
+				reelScreen.destroySymbol (i, reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]);
 			}
 		}
 	}

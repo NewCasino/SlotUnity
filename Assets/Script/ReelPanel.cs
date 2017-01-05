@@ -56,7 +56,7 @@ public class ReelPanel : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	private void reset(){
 		
 	}
@@ -73,6 +73,7 @@ public class ReelPanel : MonoBehaviour {
 
 	public void stopSpin(){
 		spinResultJsonString = spinRequest.GetResult ();
+		Debug.Log (spinResultJsonString);
 		spinRequest = null;
 
 		reelData = JsonMapper.ToObject<ReelData>(spinResultJsonString);
@@ -108,24 +109,52 @@ public class ReelPanel : MonoBehaviour {
 		if (burstSymbolNum <= 0) {
 			burstSymbolNum = 0;
 			DestroySymbol ();
+			DestroyData ();
 			iter.MoveNext ();
 		}
 	}
 
 	private void BurstSymbol(){
-		if (currentTransition >= reelData.cosmos.gameResult.transitions.Length) {
+		if (currentTransition >= reelData.cosmos.gameResults.transitions.Length) {
 			currentTransition = 0;
 			return;
 		}
 
-		for (int i = 0; i < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
-			for (int j = 0; j < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
-				reelScreen.getLineSymbol(i, reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]).GetComponent<SymbolBehavior> ().SetToFlash (true);
-				burstSymbolNum++;
-			}
-		}
+		burstSymbolNum = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length;
+
+		StartCoroutine (playOneByOneAni());
+		//for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
+//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+//				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().SetToFlash (true);
+//				burstSymbolNum++;
+//			}
+			//Debug.Log(1);
+
+			//StartCoroutine(playOneByOneAni());
+			//yield return new WaitForSeconds (2);
+			//Debug.Log (0);
+			//DoNextIter ();
+		//}
 
 		iter = Drop ();
+	}
+
+	private IEnumerator playOneByOneAni(){
+		int targetsLength = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length;
+		for (int j = 0; j < targetsLength; j++) {
+			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().SetToFlash (true);
+			}
+			yield return new WaitForSeconds (2);
+			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().SetToFlash (false);
+			}
+			Debug.Log (burstSymbolNum);
+			DoNextIter ();
+		}
 	}
 		
 	private IEnumerator Drop(){
@@ -143,10 +172,58 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void DestroySymbol(){
-		for (int i = 0; i < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions.Length; i++) {
-			for (int j = 0; j < reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p.Length; j++) {
-				reelScreen.destroySymbol (i, reelData.cosmos.gameResult.transitions [currentTransition].collapse.targets[0].target.positions[i].p[j]);
+		bool[,] destroyArray = new bool[reelData.cosmos.gameResults.startScreen.reels.Length, reelData.cosmos.gameResults.startScreen.reels [0].reel.Length];
+		for (int i = 0; i < reelData.cosmos.gameResults.startScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.cosmos.gameResults.startScreen.reels [0].reel.Length; j++) {
+				destroyArray [i, j] = false;
 			}
 		}
+		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
+			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+				destroyArray [p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]] = true;
+			}
+		}
+		for (int i = 0; i < reelData.cosmos.gameResults.startScreen.reels.Length; i++) {
+			for (int j = reelData.cosmos.gameResults.startScreen.reels [0].reel.Length-1;j>=0; j--) {
+				if (destroyArray [i, j] == true) {
+					reelScreen.getLineSymbol (i,j).GetComponent<SymbolBehavior> ().DestroyMyself ();
+				}
+			}
+		}
+//		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
+//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+//				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().DestroyMyself ();
+//			}
+//		}
+	}
+
+	public void DestroyData(){
+		bool[,] destroyArray = new bool[reelData.cosmos.gameResults.startScreen.reels.Length, reelData.cosmos.gameResults.startScreen.reels [0].reel.Length];
+		for (int i = 0; i < reelData.cosmos.gameResults.startScreen.reels.Length; i++) {
+			for (int j = 0; j < reelData.cosmos.gameResults.startScreen.reels [0].reel.Length; j++) {
+				destroyArray [i, j] = false;
+			}
+		}
+		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
+			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+				destroyArray [p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]] = true;
+			}
+		}
+		for (int i = 0; i < reelData.cosmos.gameResults.startScreen.reels.Length; i++) {
+			for (int j = reelData.cosmos.gameResults.startScreen.reels [0].reel.Length-1;j>=0; j--) {
+				if (destroyArray [i, j] == true) {
+					reelScreen.destroySymbol (i,j);
+				}
+			}
+		}
+//		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
+//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
+//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
+//				reelScreen.destroySymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]);
+//			}
+//		}
 	}
 }

@@ -6,8 +6,11 @@ public class ConnectRequest{
 
 	//public GameObject reelPanel;
 
-	private const string DOMAIN_NAME = "https://cosmos.skygeario.com/";
-	public const string SPIN = DOMAIN_NAME + "newspin";
+	//private const string DOMAIN_NAME = "https://cosmos.skygeario.com/";
+	//public const string SPIN = DOMAIN_NAME + "newspin";
+	private const string DOMAIN_NAME = "https://spacegems.herokuapp.com/";
+	public const string SPIN = DOMAIN_NAME + "spin";
+
 	private WWW www;
 
 	private string results = "";

@@ -34,7 +34,10 @@ public class SymbolBehavior : MonoBehaviour {
 	}
 
 	private void CheckFlash(){
-		if (canFlash == false) return;
+		if (canFlash == false) {
+			gameObject.GetComponent<Image> ().enabled = true;
+			return;
+		}
 
 		Lightning ();
 	}
@@ -69,8 +72,8 @@ public class SymbolBehavior : MonoBehaviour {
 			currentLight = 20;
 			LightingTime--;
 			if (LightingTime <= 0) {
-				GameObject.Find("ReelPanel").SendMessage ("DoNextIter");
-				Destroy (this.gameObject);
+				//GameObject.Find("ReelPanel").SendMessage ("DoNextIter");
+				//Destroy (this.gameObject);
 			}
 		} else {
 			currentLight--;
@@ -79,5 +82,9 @@ public class SymbolBehavior : MonoBehaviour {
 
 	public void SetToFlash(bool canFlash){
 		this.canFlash = canFlash;
+	}
+
+	public void DestroyMyself(){
+		Destroy (this.gameObject);
 	}
 }

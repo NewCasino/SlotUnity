@@ -43,9 +43,9 @@ public class ReelPanel : MonoBehaviour {
 		reelScreen = null;
 		reelScreen = new ReelScreen ();
 		foreach (Transform child in gameObject.transform) {
-			//DestoryAllSymbol (child);
-			//Destroy (child);
-			Destroy(child.gameObject);
+			if (child.tag != "Floor") {
+				Destroy (child.gameObject);
+			}
 		}
 	}
 
@@ -123,19 +123,6 @@ public class ReelPanel : MonoBehaviour {
 		burstSymbolNum = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length;
 
 		StartCoroutine (playOneByOneAni());
-		//for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
-//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
-//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
-//				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().SetToFlash (true);
-//				burstSymbolNum++;
-//			}
-			//Debug.Log(1);
-
-			//StartCoroutine(playOneByOneAni());
-			//yield return new WaitForSeconds (2);
-			//Debug.Log (0);
-			//DoNextIter ();
-		//}
 
 		iter = Drop ();
 	}
@@ -152,7 +139,6 @@ public class ReelPanel : MonoBehaviour {
 				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
 				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().SetToFlash (false);
 			}
-			Debug.Log (burstSymbolNum);
 			DoNextIter ();
 		}
 	}
@@ -191,12 +177,6 @@ public class ReelPanel : MonoBehaviour {
 				}
 			}
 		}
-//		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
-//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
-//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
-//				reelScreen.getLineSymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]).GetComponent<SymbolBehavior> ().DestroyMyself ();
-//			}
-//		}
 	}
 
 	public void DestroyData(){
@@ -219,11 +199,5 @@ public class ReelPanel : MonoBehaviour {
 				}
 			}
 		}
-//		for (int j = 0; j < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets.Length; j++) {
-//			for (int i = 0; i < reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions.Length; i++) {
-//				int p0 = reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [0];
-//				reelScreen.destroySymbol (p0, reelData.cosmos.gameResults.transitions [currentTransition].collapse.targets [j].target.positions [i].p [1]);
-//			}
-//		}
 	}
 }

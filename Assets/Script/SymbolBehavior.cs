@@ -43,6 +43,7 @@ public class SymbolBehavior : MonoBehaviour {
 	}
 
 	public void SetTargetPos(int targetPos, int cPos = 0, int tPos = 0){
+		return;
 		this.targetPos = targetPos;
 		if (tPos - cPos != 0) {
 			this.currentTime = (int)((cPos - tPos) / this.dropDistance);
@@ -50,11 +51,6 @@ public class SymbolBehavior : MonoBehaviour {
 			this.currentTime = (this.currentPos - this.targetPos) * (this.boxDistance / this.dropDistance);
 		}
 		this.myPos[1] = this.currentPos = this.targetPos;
-	}
-
-	public void SetDistance(int dropDistance, int boxDistance){
-		this.dropDistance = dropDistance;
-		this.boxDistance = boxDistance;
 	}
 
 	public void SetCurrentPos(int[] myPos){
@@ -72,8 +68,7 @@ public class SymbolBehavior : MonoBehaviour {
 			currentLight = 20;
 			LightingTime--;
 			if (LightingTime <= 0) {
-				//GameObject.Find("ReelPanel").SendMessage ("DoNextIter");
-				//Destroy (this.gameObject);
+				
 			}
 		} else {
 			currentLight--;

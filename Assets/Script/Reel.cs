@@ -70,25 +70,18 @@ public class ReelData
 			if (cosmos.gameResults.endScreen.reels != null) {
 				Array.Reverse (cosmos.gameResults.endScreen.reels [i].reel);
 			}
-			if (cosmos.gameResults.topScreen.reels != null) {
-				//Array.Reverse (cosmos.gameResults.topScreen.reels [i].reel);
-			} else {
-				Debug.Log ("fuck");
-			}
 		}
 
 		for (int i = 0; i < cosmos.gameResults.transitions.Length; i++) {
 			for (int j = 0; j < cosmos.gameResults.transitions [i].collapse.targets.Length; j++) {
 				for (int k = 0; k < cosmos.gameResults.transitions [i].collapse.targets [j].target.positions.Length; k++) {
-					//for (int y = 0; y < cosmos.gameResult.transitions [i].collapse.targets [j].target.positions [k].p.Length; y++) {
 					if (cosmos.gameResults.transitions [i].collapse.targets [j].target.positions [k].p [1] == 0) {
 						cosmos.gameResults.transitions [i].collapse.targets [j].target.positions [k].p [1] = 2;
-						} else {
+					} else {
 						if (cosmos.gameResults.transitions [i].collapse.targets [j].target.positions [k].p [1] == 2) {
 							cosmos.gameResults.transitions [i].collapse.targets [j].target.positions [k].p [1] = 0;
 							}
-						}
-					//}
+					}
 				}
 			}
 		}

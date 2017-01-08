@@ -11,6 +11,8 @@ public class ReelPanel : MonoBehaviour {
 	private string spinResultJsonString;
 	private ConnectRequest spinRequest;
 	public GameObject symbol_gameobject;
+	public GameObject Floor;
+	public GameObject SpinButton;
 	private IEnumerator iter;
 
 	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[3,1,1]},{\"reel\":[5,1,4]},{\"reel\":[1,6,7]},{\"reel\":[6,5,4]},{\"reel\":[2,9,4]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[2,3]},{\"reel\":[2]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[3]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[3]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[3,6,4]},{\"reel\":[5,1,2]},{\"reel\":[6,7,3]},{\"reel\":[6,5,8]},{\"reel\":[2,9,1]}]}}}}";
@@ -39,6 +41,18 @@ public class ReelPanel : MonoBehaviour {
 		resetSymbolPosition ();
 	}
 
+	private void DropAllSymbol(){
+		int childNum = 0;
+		foreach (Transform child in gameObject.transform) {
+			if (child.tag != "Floor") {
+				childNum++;
+			}
+		}
+		if (childNum > 1) {
+			Floor.SetActive (false);
+		}
+	}
+
 	private void DestoryAllSymbol(){
 		reelScreen = null;
 		reelScreen = new ReelScreen ();
@@ -47,6 +61,7 @@ public class ReelPanel : MonoBehaviour {
 				Destroy (child.gameObject);
 			}
 		}
+		Floor.SetActive (true);
 	}
 
 	private void resetSymbolPosition(){
@@ -62,8 +77,10 @@ public class ReelPanel : MonoBehaviour {
 	}
 
 	public void Spin(){
-		DestoryAllSymbol ();
-		GetSpinResult ();
+		SpinButton.GetComponent<Button> ().enabled = false;
+		DropAllSymbol ();
+		Invoke ("DestoryAllSymbol", 1.0f);
+		Invoke ("GetSpinResult", 1.1f);
 	}
 
 	public void GetSpinResult(){
@@ -117,6 +134,7 @@ public class ReelPanel : MonoBehaviour {
 	private void BurstSymbol(){
 		if (currentTransition >= reelData.cosmos.gameResults.transitions.Length) {
 			currentTransition = 0;
+			SpinButton.GetComponent<Button> ().enabled = true;
 			return;
 		}
 

@@ -30,7 +30,7 @@ public class SymbolBehavior : MonoBehaviour {
 		if (currentTime <= 0) return;
 
 		currentTime--;
-		gameObject.transform.localPosition = gameObject.transform.localPosition + Vector3.down * dropDistance;
+		//gameObject.transform.localPosition = gameObject.transform.localPosition + Vector3.down * dropDistance;
 	}
 
 	private void CheckFlash(){

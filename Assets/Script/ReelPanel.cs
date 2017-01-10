@@ -17,6 +17,7 @@ public class ReelPanel : MonoBehaviour {
 
 	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[3,1,1]},{\"reel\":[5,1,4]},{\"reel\":[1,6,7]},{\"reel\":[6,5,4]},{\"reel\":[2,9,4]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[2,3]},{\"reel\":[2]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[3]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[3]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[3,6,4]},{\"reel\":[5,1,2]},{\"reel\":[6,7,3]},{\"reel\":[6,5,8]},{\"reel\":[2,9,1]}]}}}}";
 	//private string json = "{\"result\":{\"gameType\":\"cascadingReels\",\"gameResult\":{\"start\":{\"reels\":[{\"reel\":[1,1,3]},{\"reel\":[4,1,5]},{\"reel\":[7,6,1]},{\"reel\":[4,5,6]},{\"reel\":[4,9,2]}]},\"transitions\":[{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1,2]},{\"reel\":[2]},{\"reel\":[3]}]},\"drop\":{\"reels\":[{\"reel\":[6,4]},{\"reel\":[1]},{\"reel\":[4]}]}}},{\"transition\":{\"collapse\":{\"reels\":[{\"reel\":[1]},{\"reel\":[2]},{\"reel\":[1]},{\"reel\":[1]},{\"reel\":[1]}]},\"drop\":{\"reels\":[{\"reel\":[4]},{\"reel\":[2]},{\"reel\":[3]},{\"reel\":[8]},{\"reel\":[1]}]}}}],\"end\":{\"reels\":[{\"reel\":[4,6,3]},{\"reel\":[2,1,5]},{\"reel\":[3,7,6]},{\"reel\":[8,5,6]},{\"reel\":[1,9,2]}]}}}}";
+	private string json = "{\"cosmos\":{\"gameResults\":{\"startScreen\":{\"reels\":[{\"reel\":[\"SYML_04\",\"SYML_03\",\"SYML_02\"]},{\"reel\":[\"SYML_05\",\"SYML_04\",\"SYML_03\"]},{\"reel\":[\"SYML_05\",\"SYML_03\",\"SYML_03\"]},{\"reel\":[\"SYML_06\",\"SYML_04\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"endScreen\":{\"reels\":[{\"reel\":[\"SYML_00\",\"SYML_02\",\"SYML_02\"]},{\"reel\":[\"SYML_04\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_00\",\"SYML_04\",\"SYML_01\"]},{\"reel\":[\"SYML_03\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"topScreen\":{\"reels\":[{\"reel\":[\"SYML_00\",\"SYML_05\",\"SYML_02\",\"SYML_00\"]},{\"reel\":[\"SYML_06\",\"SYML_05\",\"SYML_06\",\"SYML_00\",\"SYML_04\"]},{\"reel\":[\"SYML_04\",\"SYML_04\",\"SYML_00\",\"SYML_05\",\"SYML_01\",\"SYML_04\",\"SYML_00\"]},{\"reel\":[\"SYML_03\"]},{\"reel\":[]}]},\"transitions\":[{\"collapse\":{\"targets\":[{\"target\":{\"symbol\":\"SYML_03\",\"positions\":[{\"p\":[0,1]},{\"p\":[1,2]},{\"p\":[2,2]},{\"p\":[2,1]}]}}]}},{\"collapse\":{\"targets\":[{\"target\":{\"symbol\":\"SYML_04\",\"positions\":[{\"p\":[0,1]},{\"p\":[1,2]},{\"p\":[2,1]},{\"p\":[2,0]},{\"p\":[3,1]}]}}]}},{\"collapse\":{\"targets\":[{\"target\":{\"symbol\":\"SYML_05\",\"positions\":[{\"p\":[0,0]},{\"p\":[1,2]},{\"p\":[1,0]},{\"p\":[2,2]},{\"p\":[2,0]}]}}]}},{\"collapse\":{\"targets\":[{\"target\":{\"symbol\":\"SYML_00\",\"positions\":[{\"p\":[0,1]},{\"p\":[1,0]},{\"p\":[2,2]}]}}]}}],\"wins\":{\"wins\":{\"totalWinAmt\":145,\"results\":[{\"result\":{\"symbol\":\"SYML_03\",\"payOut\":{\"pay\":20,\"desc\":\"Big Win! wins 20\"}}},{\"result\":{\"symbol\":\"SYML_04\",\"payOut\":{\"pay\":100,\"desc\":\"\"}}},{\"result\":{\"symbol\":\"SYML_05\",\"payOut\":{\"pay\":20,\"desc\":\"Big Win! wins 20\"}}},{\"result\":{\"symbol\":\"SYML_00\",\"payOut\":{\"pay\":5,\"desc\":\"Happy! wins 5\"}}}]}}},\"gameProgress\":[{\"result\":{\"reels\":[{\"reel\":[\"SYML_04\",\"SYML_03\",\"SYML_02\"]},{\"reel\":[\"SYML_05\",\"SYML_04\",\"SYML_03\"]},{\"reel\":[\"SYML_05\",\"SYML_03\",\"SYML_03\"]},{\"reel\":[\"SYML_06\",\"SYML_04\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"winEvals\":{\"hasWin\":true,\"reelScreen\":\"SYML_04:SYML_03:SYML_02|SYML_05:SYML_04:SYML_03|SYML_05:SYML_03:SYML_03|SYML_06:SYML_04:SYML_06|SYML_01:SYML_05:SYML_06\",\"results\":[{\"result\":{\"symbol\":\"SYML_00\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_01\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_02\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_03\",\"isWin\":true,\"winMatching\":[\"SYML_04:SYML_03:SYML_02|SYML_05:SYML_04:SYML_03|SYML_05:SYML_03:SYML_03\"],\"payOut\":{\"pay\":20,\"desc\":\"Big Win! wins 20\"}}},{\"result\":{\"symbol\":\"SYML_04\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_05\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_06\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}}]}},{\"result\":{\"reels\":[{\"reel\":[\"SYML_00\",\"SYML_04\",\"SYML_02\"]},{\"reel\":[\"SYML_06\",\"SYML_05\",\"SYML_04\"]},{\"reel\":[\"SYML_04\",\"SYML_04\",\"SYML_05\"]},{\"reel\":[\"SYML_06\",\"SYML_04\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"winEvals\":{\"hasWin\":true,\"reelScreen\":\"SYML_00:SYML_04:SYML_02|SYML_06:SYML_05:SYML_04|SYML_04:SYML_04:SYML_05|SYML_06:SYML_04:SYML_06|SYML_01:SYML_05:SYML_06\",\"results\":[{\"result\":{\"symbol\":\"SYML_00\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_01\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_02\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_03\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_04\",\"isWin\":true,\"winMatching\":[\"SYML_00:SYML_04:SYML_02|SYML_06:SYML_05:SYML_04|SYML_04:SYML_04:SYML_05|SYML_06:SYML_04:SYML_06\"],\"payOut\":{\"pay\":100,\"desc\":\"\"}}},{\"result\":{\"symbol\":\"SYML_05\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_06\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}}]}},{\"result\":{\"reels\":[{\"reel\":[\"SYML_05\",\"SYML_00\",\"SYML_02\"]},{\"reel\":[\"SYML_05\",\"SYML_06\",\"SYML_05\"]},{\"reel\":[\"SYML_05\",\"SYML_00\",\"SYML_05\"]},{\"reel\":[\"SYML_03\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"winEvals\":{\"hasWin\":true,\"reelScreen\":\"SYML_05:SYML_00:SYML_02|SYML_05:SYML_06:SYML_05|SYML_05:SYML_00:SYML_05|SYML_03:SYML_06:SYML_06|SYML_01:SYML_05:SYML_06\",\"results\":[{\"result\":{\"symbol\":\"SYML_00\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_01\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_02\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_03\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_04\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_05\",\"isWin\":true,\"winMatching\":[\"SYML_05:SYML_00:SYML_02|SYML_05:SYML_06:SYML_05|SYML_05:SYML_00:SYML_05\"],\"payOut\":{\"pay\":20,\"desc\":\"Big Win! wins 20\"}}},{\"result\":{\"symbol\":\"SYML_06\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}}]}},{\"result\":{\"reels\":[{\"reel\":[\"SYML_02\",\"SYML_00\",\"SYML_02\"]},{\"reel\":[\"SYML_00\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_04\",\"SYML_01\",\"SYML_00\"]},{\"reel\":[\"SYML_03\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"winEvals\":{\"hasWin\":true,\"reelScreen\":\"SYML_02:SYML_00:SYML_02|SYML_00:SYML_06:SYML_06|SYML_04:SYML_01:SYML_00|SYML_03:SYML_06:SYML_06|SYML_01:SYML_05:SYML_06\",\"results\":[{\"result\":{\"symbol\":\"SYML_00\",\"isWin\":true,\"winMatching\":[\"SYML_02:SYML_00:SYML_02|SYML_00:SYML_06:SYML_06|SYML_04:SYML_01:SYML_00\"],\"payOut\":{\"pay\":5,\"desc\":\"Happy! wins 5\"}}},{\"result\":{\"symbol\":\"SYML_01\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_02\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_03\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_04\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_05\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_06\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}}]}},{\"result\":{\"reels\":[{\"reel\":[\"SYML_00\",\"SYML_02\",\"SYML_02\"]},{\"reel\":[\"SYML_04\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_00\",\"SYML_04\",\"SYML_01\"]},{\"reel\":[\"SYML_03\",\"SYML_06\",\"SYML_06\"]},{\"reel\":[\"SYML_01\",\"SYML_05\",\"SYML_06\"]}]},\"winEvals\":{\"hasWin\":false,\"reelScreen\":\"SYML_00:SYML_02:SYML_02|SYML_04:SYML_06:SYML_06|SYML_00:SYML_04:SYML_01|SYML_03:SYML_06:SYML_06|SYML_01:SYML_05:SYML_06\",\"results\":[{\"result\":{\"symbol\":\"SYML_00\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_01\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_02\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_03\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_04\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_05\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}},{\"result\":{\"symbol\":\"SYML_06\",\"isWin\":false,\"winMatching\":null,\"payOut\":null}}]}}]}}";
 	// Use this for initialization
 	void Start () {
 		
@@ -49,8 +50,22 @@ public class ReelPanel : MonoBehaviour {
 			}
 		}
 		if (childNum > 1) {
-			Floor.SetActive (false);
+			for (int i = 0; i < reelData.playScreen.reels.Length; i++) {
+				Invoke ("MoveRightFloor", i * 0.08f);
+			}
+			Invoke ("setFloorFalse", 1.0f);
+			//Floor.SetActive (false);
 		}
+
+	}
+
+	private void MoveRightFloor(){
+		Floor.transform.position = Floor.transform.position + Vector3.right * 250;
+	}
+
+	private void setFloorFalse(){
+		Floor.transform.position = Floor.transform.position + Vector3.left * 1250;
+		Floor.SetActive (false);
 	}
 
 	private void DestoryAllSymbol(){
@@ -80,16 +95,18 @@ public class ReelPanel : MonoBehaviour {
 		SpinButton.GetComponent<Button> ().enabled = false;
 		DropAllSymbol ();
 		Invoke ("DestoryAllSymbol", 1.0f);
-		Invoke ("GetSpinResult", 1.1f);
+		//Invoke ("GetSpinResult", 1.1f);
+		Invoke ("stopSpin", 1.1f);
 	}
 
 	public void GetSpinResult(){
-		spinRequest = new ConnectRequest (ConnectRequest.SPIN);
-		StartCoroutine (spinRequest.WaitForRequest (spinRequest.GetWWW(), stopSpin));
+		//spinRequest = new ConnectRequest (ConnectRequest.SPIN);
+		//StartCoroutine (spinRequest.WaitForRequest (spinRequest.GetWWW(), stopSpin));
 	}
 
 	public void stopSpin(){
-		spinResultJsonString = spinRequest.GetResult ();
+		//spinResultJsonString = spinRequest.GetResult ();
+		spinResultJsonString = json;
 		Debug.Log (spinResultJsonString);
 		spinRequest = null;
 

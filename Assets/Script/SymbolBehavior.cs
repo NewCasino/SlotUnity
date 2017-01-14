@@ -4,6 +4,7 @@ using System.Collections;
 
 public class SymbolBehavior : MonoBehaviour {
 
+	private string myName = "";
 	private int[] myPos;
 	private int LightingTime = 8;
 	private int currentLight = 20;
@@ -58,13 +59,17 @@ public class SymbolBehavior : MonoBehaviour {
 		this.currentPos = myPos[1];
 	}
 
+	public void SetMyName(string myName){
+		this.myName = myName;
+	}
+
 	public int GetSymbolPos(){
 		return myPos [1];
 	}
 
 	private void Lightning(){
 		if (currentLight <= 0) {
-			gameObject.GetComponent<Image> ().enabled = !gameObject.GetComponent<Image> ().enabled;
+			//gameObject.GetComponent<Image> ().enabled = !gameObject.GetComponent<Image> ().enabled;
 			currentLight = 20;
 			LightingTime--;
 			if (LightingTime <= 0) {
@@ -81,5 +86,10 @@ public class SymbolBehavior : MonoBehaviour {
 
 	public void DestroyMyself(){
 		Destroy (this.gameObject);
+	}
+
+	public void playAni(){
+		gameObject.GetComponent<Animator> ().Play (myName);
+		gameObject.GetComponent<Animator> ().StopPlayback ();
 	}
 }
